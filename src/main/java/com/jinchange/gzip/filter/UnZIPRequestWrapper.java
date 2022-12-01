@@ -14,10 +14,15 @@ import java.io.*;
  * @Author zhangjin
  * @Date 2022/3/26 11:02
  * @Description: JsonString经过压缩后保存为二进制文件 -> 解压缩后还原成JsonString转换成byte[] 写回body中
+ * 不要将压缩后的byte[]作为字符串直接传输 否则你会发现压缩后的请求数据比没有压缩还要大
+ * 有两种传输byte[]的方式
+ * 1. 将压缩后的byte[]进行base64编码之后再传输base64字符串
+ * 2. 把压缩后的byte[]以二进制的方式写入文件 然后再body中带上文件 这种方式可以不损失压缩效果
  */
 @Slf4j
 public class UnZIPRequestWrapper extends HttpServletRequestWrapper {
 
+    //将客户端的请求读取到bytes数组中
     private final byte[] bytes;
 
     public UnZIPRequestWrapper(HttpServletRequest request) throws IOException {
@@ -36,6 +41,7 @@ public class UnZIPRequestWrapper extends HttpServletRequestWrapper {
                 bytes = body;
                 return;
             }
+            //body解压缩
             this.bytes = GZIPUtils.uncompressToByteArray(body);
         } catch (IOException ex) {
             log.info("解压缩步骤发生异常！");

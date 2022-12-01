@@ -129,7 +129,7 @@ public class GZIPUtils {
      */
     public static void saveFile(String filename,byte [] data)throws Exception{
         if(data != null){
-            String filepath ="/Users/algorix/Downloads/" + filename;
+            String filepath ="./" + filename;
             File file  = new File(filepath);
             if(file.exists()){
                 file.delete();

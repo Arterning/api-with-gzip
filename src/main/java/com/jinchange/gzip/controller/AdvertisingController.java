@@ -20,6 +20,7 @@ public class AdvertisingController {
 
     @PostMapping("/save")
     public Advertising saveProject(@RequestBody Advertising advertising) {
+        //filter已经完成解压工作 这里直接拿到了字符串
         log.info("获取内容"+ advertising);
         return advertising;
     }
